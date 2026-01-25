@@ -1,0 +1,16 @@
+Rodar o docker
+
+
+Postgree
+  docker run -d --name librarydb -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=library --network library-network postgres:16.3
+  
+Interface Postgree
+  docker run -d --name pgadmin4 -p 15432:80 -e PGADMIN_DEFAULT_EMAIL=admin@admin.com -e PGADMIN_DEFAULT_PASSWORD=admin -e PGADMIN_CONFIG_SERVER_MODE=False -v pgadmin-data:/var/lib/pgadmin --network library-network dpage/pgadmin4:8.9
+
+Excluir o container:
+  docker ps -all
+  docker rm -f librarydb pgadmin4
+
+
+criar network
+  docker network create library-network
