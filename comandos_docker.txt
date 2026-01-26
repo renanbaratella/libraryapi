@@ -14,3 +14,4 @@ Excluir o container:
 
 criar network
   docker network create library-network
+  docker network list

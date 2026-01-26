@@ -9,4 +9,6 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update #update - mesmo derrubando a aplicação os dados mantém, #create-drop toda vez que dropa aplicação exclui todos os banco e cria novamente.
+      ddl-auto: update
+    properties:
+      hibernate.format_sql: true

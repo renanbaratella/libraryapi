@@ -1,29 +1,18 @@
 package io.github.libraryapi.model;
 
+import jakarta.persistence.*;
+import lombok.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
-
 @Entity
 @Table(name = "livro")
-@Getter
-@Setter
-//@Data // ja tem @Getter @Setter @RequiredArgsConstrutor @ToString mas como esta bidirecional pode ocorrer problemas
+@Data
+@ToString(exclude = "autor")
 public class Livro {
-    
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -32,10 +21,10 @@ public class Livro {
     @Column(name = "isbn", length = 20, nullable = false)
     private String isbn;
 
-    @Column(name = "titulo", length = 250, nullable = false)
+    @Column(name = "titulo", length = 150, nullable = false)
     private String titulo;
 
-    @Column(name = "dataPublicacao")
+    @Column(name = "data_publicacao")
     private LocalDate dataPublicacao;
 
     @Enumerated(EnumType.STRING)
@@ -43,11 +32,12 @@ public class Livro {
     private GeneroLivro genero;
 
     @Column(name = "preco", precision = 18, scale = 2)
-    private BigDecimal preco; 
-    //private BigDecimal preco; mais precisão no valor
+    private BigDecimal preco;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "id_autor", nullable = false)
+    @ManyToOne(
+//            cascade = CascadeType.ALL,
+        fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "id_autor")
     private Autor autor;
-
 }
