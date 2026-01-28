@@ -1,5 +1,7 @@
 Rodar o docker
 
+COMANDO PARA EXCLUIR TODOS CONTAINERS
+docker rm -f $(docker ps -aq)
 
 Postgree
   docker run -d --name librarydb -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=library --network library-network postgres:16.3
