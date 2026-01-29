@@ -4,22 +4,25 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 
+import io.github.libraryapi.exceptions.OperacaoNaoPermitidaException;
 import io.github.libraryapi.model.Autor;
 import io.github.libraryapi.repository.AutorRepository;
+import io.github.libraryapi.repository.LivroRepository;
 import io.github.libraryapi.validator.AutorValidator;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class AutorService {
 
     private final AutorRepository autorRepository;
     private final AutorValidator validator;
-
-    public AutorService(AutorRepository repository, AutorValidator validator){
-        this.autorRepository = repository;
-        this.validator = validator;
-    }
+    private final LivroRepository livroRepository;
 
     public Autor salvar(Autor autor){
         validator.validar(autor);
@@ -41,6 +44,10 @@ public class AutorService {
     }
 
     public void deleteById(Autor autor) {
+        if(possuiLivro(autor)){
+            throw new OperacaoNaoPermitidaException("Não é permitido excluir um Autor que possui livros cadastrados");
+        };
+
         autorRepository.delete(autor);
     }
 
@@ -58,6 +65,26 @@ public class AutorService {
         }
 
         return autorRepository.findAll();
+    }
+
+    public List<Autor> pesquisaByExample(String nome, String nacionalidade){
+        var autor = new Autor();
+        autor.setNome(nome);
+        autor.setNacionalidade(nacionalidade);
+        
+        ExampleMatcher matcher = ExampleMatcher
+            .matching()
+            .withIgnoreNullValues()
+            .withIgnoreCase()
+            .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+        Example<Autor> autorExample = Example.of(autor, matcher);
+
+        return autorRepository.findAll(autorExample);
+
+    }
+
+    public boolean possuiLivro(Autor autor){
+        return livroRepository.existsByAutor(autor);
     }
 
 }
