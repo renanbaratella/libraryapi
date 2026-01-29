@@ -1,0 +1,159 @@
+{
+  "info": {
+    "_postman_id": "ec626f86-ee1d-4e61-8d83-4ee46b77e60d",
+    "name": "Udemy",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "20986028"
+  },
+  "item": [
+    {
+      "name": "LibraryAPI",
+      "item": [
+        {
+          "name": "Autores",
+          "item": []
+        }
+      ]
+    },
+    {
+      "name": "Cadastrar Autor",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nome\": \"Maria\",\r\n    \"dataNascimento\": \"1980-01-01\",\r\n    \"nacionalidade\": \"Brasileiro\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/autores",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "autores"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetById Autor",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/autores/:id",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "autores",
+            ":id"
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "a32a8916-33c0-4821-8090-7bcd1564a73f"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DeleteById Autor",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/autores/cd6ca34c-bb60-4e8d-943e-55a1ea4c3fad",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "autores",
+            "cd6ca34c-bb60-4e8d-943e-55a1ea4c3fad"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Filtrar Por Nome Ou Nacionalidade",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/autores?nome=Maria&nacionalidade=Brasileiro",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "autores"
+          ],
+          "query": [
+            {
+              "key": "nome",
+              "value": "Maria",
+              "type": "text"
+            },
+            {
+              "key": "nacionalidade",
+              "value": "Brasileiro",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Atualizar Autor",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nome\": \"Joaoo\",\r\n    \"dataNascimento\": \"1980-01-01\",\r\n    \"nacionalidade\": \"Brasileiroo\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/autores/:id",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "autores",
+            ":id"
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "a32a8916-33c0-4821-8090-7bcd1564a73f"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
