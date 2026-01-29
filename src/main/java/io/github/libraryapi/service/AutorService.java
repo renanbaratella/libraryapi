@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 
 import io.github.libraryapi.exceptions.OperacaoNaoPermitidaException;
