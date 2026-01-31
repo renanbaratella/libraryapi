@@ -3,6 +3,7 @@ package io.github.libraryapi.repository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -33,10 +34,10 @@ class LivroRepositoryTest {
         livro.setDataPublicacao(LocalDate.of(1980, 1, 2));
 
         Autor autor = autorRepository
-                .findById(UUID.fromString("76e7c418-ccf9-4e2a-af20-c28b9e50ab55"))
+                .findById(UUID.fromString("4c31d156-fd3f-4e26-b151-b48632e98f91"))
                 .orElse(null);
 
-//        livro.setAutor(autor);
+        livro.setAutor(autor);
 
         repository.save(livro);
     }
@@ -127,8 +128,8 @@ class LivroRepositoryTest {
 
     @Test
     void pesquisaPorISBNTest(){
-        List<Livro> lista = repository.findByIsbn("20847-84874");
-        lista.forEach(System.out::println);
+        Optional<Livro> livro = repository.findByIsbn("20847-84874");
+        livro.ifPresent(System.out::println);
     }
 
 

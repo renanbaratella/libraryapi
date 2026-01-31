@@ -3,8 +3,11 @@ package io.github.libraryapi.repository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -21,6 +24,8 @@ import io.github.libraryapi.model.Livro;
  */
 public interface LivroRepository extends JpaRepository<Livro, UUID>, JpaSpecificationExecutor<Livro> {
 
+    Page<Livro> findByAutor(Autor autor, Pageable pageable);
+
     // Query Method
     // select * from livro where id_autor = id
     List<Livro> findByAutor(Autor autor);
@@ -29,7 +34,7 @@ public interface LivroRepository extends JpaRepository<Livro, UUID>, JpaSpecific
     List<Livro> findByTitulo(String titulo);
 
     // select * from livro where isbn = ?
-    List<Livro> findByIsbn(String isbn);
+    Optional<Livro> findByIsbn(String isbn);
 
     // select * from livro where titulo = ? and preco = ?
     List<Livro> findByTituloAndPreco(String titulo, BigDecimal preco);
@@ -58,19 +63,20 @@ public interface LivroRepository extends JpaRepository<Livro, UUID>, JpaSpecific
     List<String> listarNomesDiferentesLivros();
 
     @Query("""
-                select l.genero
-                from Livro l
-                join l.autor a
-                where a.nacionalidade = 'Brasileira'
-                order by l.genero
-            """)
+        select l.genero
+        from Livro l
+        join l.autor a
+        where a.nacionalidade = 'Brasileira'
+        order by l.genero
+    """)
     List<String> listarGenerosAutoresBrasileiros();
 
     // named parameters -> parametros nomeados
     @Query("select l from Livro l where l.genero = :genero order by :paramOrdenacao ")
     List<Livro> findByGenero(
             @Param("genero") GeneroLivro generoLivro,
-            @Param("paramOrdenacao") String nomePropriedade);
+            @Param("paramOrdenacao") String nomePropriedade
+    );
 
     // positional parameters
     @Query("select l from Livro l where l.genero = ?2 order by ?1 ")
@@ -87,5 +93,4 @@ public interface LivroRepository extends JpaRepository<Livro, UUID>, JpaSpecific
     void updateDataPublicacao(LocalDate novaData);
 
     boolean existsByAutor(Autor autor);
-
 }
