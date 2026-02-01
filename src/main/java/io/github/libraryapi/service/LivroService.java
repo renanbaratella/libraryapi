@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 
 import io.github.libraryapi.model.GeneroLivro;
 import io.github.libraryapi.model.Livro;
+import io.github.libraryapi.model.Usuario;
 import io.github.libraryapi.repository.LivroRepository;
+import io.github.libraryapi.security.SecurityService;
 import io.github.libraryapi.validator.LivroValidator;
 import lombok.RequiredArgsConstructor;
 
@@ -27,21 +29,24 @@ public class LivroService {
 
     private final LivroRepository repository;
     private final LivroValidator validator;
+    private final SecurityService securityService;
 
     public Livro salvar(Livro livro) {
         validator.validar(livro);
+        Usuario usuario = securityService.obterUsuarioLogado();
+        livro.setUsuario(usuario);
         return repository.save(livro);
     }
 
-    public Optional<Livro> obterPorId(UUID id){
+    public Optional<Livro> obterPorId(UUID id) {
         return repository.findById(id);
     }
 
-    public void deletar(Livro livro){
+    public void deletar(Livro livro) {
         repository.delete(livro);
     }
 
-     //isbn, titulo, nome autor, genero, ano de publicação
+    // isbn, titulo, nome autor, genero, ano de publicação
     public Page<Livro> pesquisa(
             String isbn,
             String titulo,
@@ -49,37 +54,37 @@ public class LivroService {
             GeneroLivro genero,
             Integer anoPublicacao,
             Integer pagina,
-            Integer tamanhoPagina){
+            Integer tamanhoPagina) {
 
         // select * from livro where isbn = :isbn and nomeAutor =
 
-//        Specification<Livro> specs = Specification
-//                .where(LivroSpecs.isbnEqual(isbn))
-//                .and(LivroSpecs.tituloLike(titulo))
-//                .and(LivroSpecs.generoEqual(genero))
-//                ;
+        // Specification<Livro> specs = Specification
+        // .where(LivroSpecs.isbnEqual(isbn))
+        // .and(LivroSpecs.tituloLike(titulo))
+        // .and(LivroSpecs.generoEqual(genero))
+        // ;
 
         // select * from livro where 0 = 0
-        Specification<Livro> specs = Specification.where((root, query, cb) -> cb.conjunction() );
+        Specification<Livro> specs = Specification.where((root, query, cb) -> cb.conjunction());
 
-        if(isbn != null){
+        if (isbn != null) {
             // query = query and isbn = :isbn
             specs = specs.and(isbnEqual(isbn));
         }
 
-        if(titulo != null){
+        if (titulo != null) {
             specs = specs.and(tituloLike(titulo));
         }
 
-        if(genero != null){
+        if (genero != null) {
             specs = specs.and(generoEqual(genero));
         }
 
-        if(anoPublicacao != null){
+        if (anoPublicacao != null) {
             specs = specs.and(anoPublicacaoEqual(anoPublicacao));
         }
 
-        if(nomeAutor != null){
+        if (nomeAutor != null) {
             specs = specs.and(nomeAutorLike(nomeAutor));
         }
 
@@ -89,7 +94,7 @@ public class LivroService {
     }
 
     public void atualizar(Livro livro) {
-        if(livro.getId() == null){
+        if (livro.getId() == null) {
             throw new IllegalArgumentException("Para atualizar, é necessário que o livro já esteja salvo na base.");
         }
 
